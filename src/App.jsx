@@ -100,13 +100,13 @@ const quotes = [
 function PremiumStat({ value, label, icon: Icon, colorClass }) {
   if (!Icon) return null;
   return (
-    <div className="bg-white border border-[#E4E7EC] p-5 sm:p-6 rounded-2xl flex items-center gap-5 sm:gap-6 shadow-sm hover:shadow-md transition-shadow group flex-1">
-      <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center ${colorClass} group-hover:rotate-6 transition-transform flex-shrink-0`}>
-        <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
+    <div className="bg-white border border-[#F1F3F7] p-3.5 sm:p-6 rounded-2xl flex items-center gap-3.5 sm:gap-6 shadow-sm hover:shadow-md transition-shadow group flex-1">
+      <div className={`w-9 h-9 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center ${colorClass} group-hover:rotate-6 transition-transform flex-shrink-0`}>
+        <Icon className="w-4 h-4 sm:w-7 sm:h-7" />
       </div>
       <div className="min-w-0">
-        <div className="text-2xl sm:text-3xl font-black text-[#0B0E1E] leading-none mb-1 tracking-tighter truncate">{value}</div>
-        <div className="text-[10px] font-extrabold text-[#98A2B3] uppercase tracking-[0.2em] truncate">{label}</div>
+        <div className="text-xl sm:text-3xl font-black text-[#1A1F2B] leading-none mb-1 tracking-tighter truncate">{value}</div>
+        <div className="text-[8px] sm:text-[10px] font-extrabold text-[#98A2B3] uppercase tracking-[0.15em] truncate">{label}</div>
       </div>
     </div>
   );
@@ -208,20 +208,20 @@ export default function App() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-12 min-h-screen flex flex-col">
       {/* Navigation */}
-      <nav className="flex justify-between items-center mb-10 sm:mb-16">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#0B0E1E] text-white rounded-[1rem] sm:rounded-2xl flex items-center justify-center shadow-lg shadow-black/10">
-            <Hexagon className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2.5} />
+      <nav className="flex justify-between items-center mb-6 sm:mb-16 px-1 sm:px-0">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 sm:w-12 sm:h-12 bg-[#1A1F2B] text-white rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg shadow-black/10">
+            <Hexagon className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={2.5} />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#0B0E1E] leading-none">Challenge Tracker</h1>
+            <h1 className="text-lg sm:text-2xl font-black tracking-tight text-[#1A1F2B] leading-none">Elite Tracker</h1>
           </div>
         </div>
         {!activeId && (
-          <button onClick={() => setIsCreating(true)} className="btn-primary flex items-center gap-2 group text-xs sm:text-base px-5 sm:px-6 py-3 sm:py-3.5">
+          <button onClick={() => setIsCreating(true)} className="btn-primary flex items-center gap-2 group text-xs sm:text-base px-5 sm:px-8 py-3 sm:py-4">
             <Plus size={18} className="group-hover:rotate-90 transition-transform" />
-            <span className="hidden sm:inline">Launch Mission</span>
-            <span className="sm:hidden">New</span>
+            <span className="hidden sm:inline text-sm">Start New Challenge</span>
+            <span className="sm:hidden text-xs">New</span>
           </button>
         )}
       </nav>
@@ -245,26 +245,38 @@ export default function App() {
             </div>
           </div>
         ) : (
-          <motion.div key="hub" className="space-y-8 sm:space-y-12">
-            {/* Summary Highlights */}
-            <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
-              <div className="card-premium p-4 sm:p-10 bg-white lg:col-span-2 overflow-hidden">
-                <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#98A2B3] mb-4 sm:mb-6 text-center lg:text-left">Global Intensity Score</p>
-                <div className="h-64  sm:h-72">
-                  {HighchartsReact && <HighchartsReact highcharts={Highcharts} options={getGaugeOptions(globalPercentage, 100, isMobile)} />}
+          <motion.div key="hub" className="space-y-6 sm:space-y-16">
+            {/* Dashboard Overview */}
+            <div className="grid lg:grid-cols-12 gap-6 sm:gap-8 items-start">
+              <div className="card-premium p-4 sm:p-12 bg-white lg:col-span-8 overflow-hidden">
+                <div className="flex items-center justify-between mb-4 sm:mb-8">
+                  <h3 className="text-[10px] sm:text-sm font-black uppercase tracking-[0.2em] text-[#98A2B3]">Consistency Performance</h3>
+                  <div className="flex items-center gap-1.5 text-primary font-bold text-[10px] sm:text-sm">
+                    <Zap size={14} className="sm:w-4 sm:h-4" /> <span>Live</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center py-4">
+                  <div className="aspect-square w-full max-w-[260px] sm:max-w-[320px]">
+                    {HighchartsReact && <HighchartsReact highcharts={Highcharts} options={getGaugeOptions(globalPercentage, 100, isMobile)} />}
+                  </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 sm:gap-6">
-                <PremiumStat value={challenges.length} label="Missions" icon={Layout} colorClass="bg-blue-50 text-blue-600" />
-                <PremiumStat value={totalCompleted} label="Check-ins" icon={Zap} colorClass="bg-red-50 text-red-600" />
-                <PremiumStat value={challenges.filter(c => c.completedDays.length === c.duration).length} label="Achieved" icon={Award} colorClass="bg-amber-50 text-amber-600" />
+              <div className="lg:col-span-4 grid grid-cols-2 lg:flex lg:flex-col gap-3 sm:gap-6 h-full">
+                <PremiumStat value={challenges.length} label="Active" icon={Layout} colorClass="bg-indigo-50 text-indigo-600" />
+                <PremiumStat value={totalCompleted} label="Check-ins" icon={Zap} colorClass="bg-rose-50 text-rose-600" />
+                <div className="col-span-2 lg:col-span-1">
+                  <PremiumStat value={challenges.filter(c => c.completedDays.length === c.duration).length} label="Mastered" icon={Award} colorClass="bg-amber-50 text-amber-600" />
+                </div>
               </div>
             </div>
 
-            {/* List Section */}
+            {/* Content List */}
             <div>
-              <h3 className="text-[10px] sm:text-[12px] font-black uppercase tracking-[0.25em] text-[#98A2B3] mb-6 sm:mb-8 px-2 sm:px-0">Current Architectures</h3>
-              <div className="grid md:grid-cols-2 gap-6 sm:gap-10">
+              <div className="flex items-center justify-between mb-4 sm:mb-8 px-1 sm:px-2">
+                <h3 className="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] text-[#98A2B3]">Strategies</h3>
+                <div className="h-[1px] flex-1 bg-[#F1F3F7] mx-4"></div>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-8">
                 {challenges.map(c => (
                   <ChallengeCard key={c.id} challenge={c} onClick={() => setActiveId(c.id)} />
                 ))}
@@ -277,15 +289,16 @@ export default function App() {
       <AnimatePresence>
         {isCreating && <CreateModal onClose={() => setIsCreating(false)} onSubmit={addChallenge} />}
         {showConfetti && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none bg-white/10 backdrop-blur-[2px] p-4">
-            <div className="card-premium p-8 sm:p-12 bg-white text-center shadow-3xl border-b-8 border-primary max-w-sm w-full">
-              <div className="flex items-center justify-center mb-5 sm:mb-6">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-50 rounded-full flex items-center justify-center text-primary">
-                  <Trophy size={28} className="sm:w-8 sm:h-8" />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none bg-[#1A1F2B]/20 backdrop-blur-[4px] p-4">
+            <div className="card-premium p-10 sm:p-16 bg-white text-center shadow-3xl border-b-[12px] border-primary max-w-md w-full relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-indigo-400 to-primary opacity-50"></div>
+              <div className="flex items-center justify-center mb-8">
+                <div className="w-20 h-20 bg-indigo-50 rounded-3xl flex items-center justify-center text-primary rotate-12">
+                  <Trophy size={40} />
                 </div>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black mb-3 text-[#0B0E1E]">Elite Move!</h3>
-              <p className="text-base sm:text-lg italic font-medium opacity-70">"{quote}"</p>
+              <h3 className="text-3xl sm:text-4xl font-black mb-4 text-[#1A1F2B] tracking-tight">Milestone Reached!</h3>
+              <p className="text-lg sm:text-xl italic font-medium text-[#475467] leading-relaxed">"{quote}"</p>
             </div>
           </motion.div>
         )}
@@ -301,21 +314,23 @@ function ChallengeCard({ challenge, onClick }) {
     <motion.div
       whileHover={{ scale: 1.01 }}
       onClick={onClick}
-      className="card-premium p-6 sm:p-10 cursor-pointer bg-white group border-2 border-transparent hover:border-primary/10"
+      className="card-premium p-4 sm:p-10 cursor-pointer bg-white group border-2 border-transparent hover:border-primary/10 overflow-hidden"
     >
-      <div className="flex justify-between items-start mb-8 sm:mb-10">
-        <h3 className="text-xl sm:text-2xl font-black text-[#0B0E1E] leading-tight tracking-tight max-w-[80%] line-clamp-2">{challenge.title}</h3>
-        <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-primary bg-blue-50 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-primary/5 whitespace-nowrap">
-          {challenge.duration}D
-        </span>
-      </div>
-      <div className="space-y-3 sm:space-y-4">
-        <div className="flex items-end justify-between">
-          <div className="text-[10px] sm:text-[11px] font-black text-[#98A2B3] uppercase tracking-wider">Matrix</div>
-          <div className="text-lg sm:text-xl font-black text-primary">{pct}%</div>
+      <div className="flex justify-between items-start mb-10">
+        <h3 className="text-xl sm:text-2xl font-black text-[#1A1F2B] leading-tight tracking-tight max-w-[80%] line-clamp-2">{challenge.title}</h3>
+        <div className="flex flex-col items-end">
+          <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-indigo-50 px-4 py-2 rounded-full border border-primary/10 mb-1">
+            {challenge.duration} Days
+          </span>
         </div>
-        <div className="h-2 sm:h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
-          <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 1 }} className="h-full bg-primary" />
+      </div>
+      <div className="space-y-4">
+        <div className="flex items-end justify-between">
+          <div className="text-[10px] font-black text-[#98A2B3] uppercase tracking-[0.2em]">Strategy Progress</div>
+          <div className="text-xl font-black text-primary">{pct}%</div>
+        </div>
+        <div className="h-3 w-full bg-[#F1F3F7] rounded-full overflow-hidden p-[2px]">
+          <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 1.2, ease: "circOut" }} className="h-full bg-gradient-to-r from-primary to-[#4F46E5] rounded-full" />
         </div>
       </div>
     </motion.div>
@@ -592,40 +607,40 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
         </div>
       </div>
 
-      <div className="card-premium p-4 sm:p-14 bg-white flex flex-col md:flex-row gap-8 sm:gap-12 items-center overflow-hidden">
-        <div className="flex-1 text-center md:text-left space-y-4 sm:space-y-6 w-full">
+      <div className="card-premium p-5 sm:p-16 bg-white flex flex-col md:flex-row gap-8 sm:gap-16 items-center overflow-hidden border-2 border-primary/5">
+        <div className="flex-1 text-center md:text-left space-y-4 sm:space-y-8 w-full">
           <div>
-            <span className="bg-primary/5 text-primary text-[8px] sm:text-[10px] font-black uppercase tracking-[2px] px-3 py-1 sm:py-1.5 rounded-full border border-primary/10">Architecture</span>
+            <span className="bg-primary/5 text-primary text-[8px] sm:text-xs font-black uppercase tracking-[0.3em] px-4 py-1.5 rounded-full border border-primary/10">Active Strategy</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-[#0B0E1E] leading-tight">{challenge.title}</h2>
-          <div className="flex flex-wrap justify-center md:justify-start gap-3">
-            <div className="flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 bg-[#F8FAFF] text-[#475467] rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-bold border border-[#E4E7EC]">
-              <CalendarIcon size={14} className="sm:w-4 sm:h-4" /> {format(new Date(challenge.startDate), 'MMM d, yyyy')}
+          <h2 className="text-3xl sm:text-6xl font-black tracking-tight text-[#1A1F2B] leading-tight">{challenge.title}</h2>
+          <div className="flex flex-wrap justify-center md:justify-start gap-2.5 sm:gap-4">
+            <div className="flex items-center gap-2 px-4 py-3 bg-[#FAFBFF] text-[#475467] rounded-xl text-[10px] sm:text-sm font-bold border border-[#F1F3F7] shadow-sm">
+              <CalendarIcon size={14} className="text-primary" /> {format(new Date(challenge.startDate), 'MMM d, yyyy')}
             </div>
-            <div className="flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 bg-primary/5 text-primary rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-bold border border-primary/10">
-              <Target size={14} className="sm:w-4 sm:h-4" /> {challenge.completedDays.length} / {challenge.duration}
+            <div className="flex items-center gap-2 px-4 py-3 bg-primary/5 text-primary rounded-xl text-[10px] sm:text-sm font-bold border border-primary/10 shadow-sm">
+              <Target size={14} /> {challenge.completedDays.length} / {challenge.duration}
             </div>
             {missedCount > 0 && (
-              <div className="flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 bg-red-50 text-red-500 rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-bold border border-red-100">
-                <X size={14} className="sm:w-4 sm:h-4" /> {missedCount} Missed
+              <div className="flex items-center gap-2 px-4 py-3 bg-rose-50 text-rose-500 rounded-xl text-[10px] sm:text-sm font-bold border border-rose-100 shadow-sm">
+                <X size={14} /> {missedCount}
               </div>
             )}
           </div>
         </div>
-        <div className="w-full sm:w-64 h-64  sm:h-64 flex-shrink-0">
+        <div className="aspect-square w-full max-w-[260px] sm:max-w-[320px] flex-shrink-0 relative">
           {HighchartsReact && <HighchartsReact highcharts={Highcharts} options={getGaugeOptions(pct, 100, isMobile)} />}
         </div>
       </div>
 
-      <div className="card-premium p-6 sm:p-12 bg-white">
-        <div className="flex items-center justify-between mb-8 sm:mb-12">
-          <h3 className="text-lg sm:text-xl font-extrabold flex items-center gap-2 sm:gap-3">
-            <Layout className="text-primary w-5 h-5 sm:w-6 sm:h-6" /> Log
+      <div className="card-premium p-5 sm:p-14 bg-white shadow-2xl">
+        <div className="flex items-center justify-between mb-6 sm:mb-16">
+          <h3 className="text-lg sm:text-2xl font-black flex items-center gap-3 text-[#1A1F2B]">
+            <Layout className="text-primary w-5 h-5 sm:w-8 sm:h-8" /> Strategic Log
           </h3>
-          <div className="text-[9px] sm:text-[11px] font-black text-[#98A2B3] uppercase tracking-widest bg-slate-50 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#E4E7EC]/50">Check-in Log</div>
+          <div className="text-[10px] font-black text-[#98A2B3] uppercase tracking-[0.2em] bg-slate-50 px-4 py-2 rounded-full border border-slate-100 sm:block hidden">Performance Tracking</div>
         </div>
 
-        <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-10 gap-2.5 sm:gap-4">
+        <div className="grid grid-cols-5 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-10 gap-2 sm:gap-5">
           {days.map(d => {
             const done = challenge.completedDays.includes(d);
             const missed = (challenge.missedDays || []).includes(d);
@@ -735,37 +750,44 @@ function CreateModal({ onClose, onSubmit }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 bg-[#0B0E1E]/60 backdrop-blur-md" />
-      <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="card-premium w-full max-w-lg p-8 sm:p-14 bg-white relative z-10 shadow-3xl">
-        <h2 className="text-3xl sm:text-4xl font-black mb-6 sm:mb-10 tracking-tight text-[#0B0E1E]">New Journey</h2>
-        <div className="space-y-8 sm:space-y-10">
+      <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="card-premium w-full max-w-xl p-10 sm:p-16 bg-white relative z-10 shadow-3xl border-2 border-primary/5">
+        <div className="flex items-center justify-between mb-12">
+          <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-[#1A1F2B]">New Strategy</h2>
+          <button onClick={onClose} className="p-2 hover:bg-slate-50 rounded-xl transition-colors">
+            <X size={24} className="text-[#98A2B3]" />
+          </button>
+        </div>
+        <div className="space-y-10 sm:space-y-12">
           <div>
-            <label className="text-[10px] font-black uppercase tracking-widest text-[#98A2B3] mb-3 block">Challenge Focus</label>
-            <input type="text" placeholder="e.g. Morning Meditation" value={title} onChange={e => setTitle(e.target.value)} className="w-full text-xl sm:text-2xl font-bold bg-transparent border-b-2 border-[#E4E7EC] focus:border-primary outline-none py-2 transition-colors" autoFocus />
+            <label className="text-xs font-black uppercase tracking-[0.2em] text-[#98A2B3] mb-4 block">Challenge Focus</label>
+            <input type="text" placeholder="e.g. Deep Work Protocol" value={title} onChange={e => setTitle(e.target.value)} className="w-full text-2xl font-bold bg-transparent border-b-2 border-[#F1F3F7] focus:border-primary outline-none py-3 transition-all placeholder:text-[#98A2B3]/50" autoFocus />
           </div>
-          <div>
-            <label className="text-[10px] font-black uppercase tracking-widest text-[#98A2B3] mb-3 block">Duration</label>
-            <div className="flex gap-2 sm:gap-3 mb-4 sm:mb-6">
-              {['25', '50', '100'].map(p => (
-                <button key={p} onClick={() => setDays(p)} className={`flex-1 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-extrabold text-xs sm:text-sm transition-all border-2 ${days === p ? 'bg-primary border-primary text-white shadow-lg' : 'bg-slate-50 border-transparent text-[#475467]'}`}>{p}D</button>
-              ))}
+          <div className="grid sm:grid-cols-2 gap-10">
+            <div>
+              <label className="text-xs font-black uppercase tracking-[0.2em] text-[#98A2B3] mb-4 block">Duration</label>
+              <div className="flex gap-2 mb-4">
+                {['25', '50', '100'].map(p => (
+                  <button key={p} onClick={() => setDays(p)} className={`flex-1 py-3 rounded-xl font-black text-xs transition-all border-2 ${days === p ? 'bg-primary border-primary text-white shadow-md' : 'bg-[#FAFBFF] border-transparent text-[#475467] hover:border-primary/20'}`}>{p}D</button>
+                ))}
+              </div>
+              <input type="number" value={days} onChange={e => setDays(e.target.value)} className="w-full text-lg font-bold text-center bg-[#FAFBFF] p-4 rounded-2xl border border-[#F1F3F7] focus:border-primary/30 outline-none" />
             </div>
-            <input type="number" value={days} onChange={e => setDays(e.target.value)} className="w-full text-lg font-bold text-center bg-[#F8FAFF] p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#E4E7EC]" />
-          </div>
-          <div>
-            <label className="text-[10px] font-black uppercase tracking-widest text-[#98A2B3] mb-3 block">Start Date</label>
-            <div className="relative">
-              <CalendarIcon size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#98A2B3] pointer-events-none" />
-              <input
-                type="date"
-                value={startDate}
-                onChange={e => setStartDate(e.target.value)}
-                className="w-full text-lg font-bold bg-[#F8FAFF] p-3 sm:p-4 pl-11 rounded-xl sm:rounded-2xl border border-[#E4E7EC] text-[#0B0E1E] focus:border-primary outline-none transition-colors appearance-none"
-              />
+            <div>
+              <label className="text-xs font-black uppercase tracking-[0.2em] text-[#98A2B3] mb-4 block">Commencement</label>
+              <div className="relative">
+                <CalendarIcon size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-primary pointer-events-none" />
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={e => setStartDate(e.target.value)}
+                  className="w-full text-lg font-bold bg-[#FAFBFF] p-4 pl-14 rounded-2xl border border-[#F1F3F7] text-[#1A1F2B] focus:border-primary outline-none transition-all appearance-none shadow-sm"
+                />
+              </div>
             </div>
           </div>
-          <button disabled={!title} onClick={() => onSubmit(title, days, startDate)} className="btn-primary w-full py-4 text-base sm:text-lg shadow-2xl flex items-center justify-center gap-2 group">
-            <span>Initialize System</span>
-            <ArrowRight size={20} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
+          <button disabled={!title} onClick={() => onSubmit(title, days, startDate)} className="btn-primary w-full py-5 text-lg shadow-2xl flex items-center justify-center gap-3 group">
+            <span>Activate System</span>
+            <ArrowRight size={22} strokeWidth={3} className="group-hover:translate-x-2 transition-transform" />
           </button>
         </div>
       </motion.div>
@@ -778,15 +800,15 @@ function getGaugeOptions(value, max = 100, isMobile = false) {
     chart: {
       type: 'solidgauge',
       backgroundColor: 'transparent',
-      height: isMobile ? 250 : null,
-      spacing: [0, 0, 0, 0]
+      height: isMobile ? 240 : 320,
+      spacing: [10, 10, 10, 10]
     },
     title: null,
     credits: { enabled: false },
     tooltip: { enabled: false },
     pane: {
       center: ['50%', '50%'],
-      size: isMobile ? '70%' : '100%',
+      size: isMobile ? '85%' : '85%',
       startAngle: 0,
       endAngle: 360,
       background: {
@@ -801,9 +823,9 @@ function getGaugeOptions(value, max = 100, isMobile = false) {
       min: 0,
       max: max,
       stops: [
-        [0.1, '#0A58FF'], // Bright Blue
-        [0.5, '#4facfe'], // Medium Blue
-        [0.9, '#00f2fe']  // Cyan
+        [0.1, '#818CF8'], // Indigo 400
+        [0.5, '#6366F1'], // Indigo 500 (Primary)
+        [0.9, '#4F46E5']  // Indigo 600
       ],
       lineWidth: 0,
       tickWidth: 0,
@@ -815,11 +837,11 @@ function getGaugeOptions(value, max = 100, isMobile = false) {
       solidgauge: {
         rounded: true,
         dataLabels: {
-          y: isMobile ? -16 : -24,
+          y: isMobile ? -14 : -22,
           borderWidth: 0,
           useHTML: true,
-          format: `<div style="text-align:center"><span style="font-size:${isMobile ? '28px' : '38px'};color:#0B0E1E;font-weight:900;display:block;line-height:1">{y}%</span>` +
-            `<span style="font-size:${isMobile ? '8px' : '9px'};color:#98A2B3;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-top:6px;display:block">Intensity</span></div>`
+          format: `<div style="text-align:center;width:100%"><span style="font-size:${isMobile ? '24px' : '36px'};color:#1A1F2B;font-weight:900;display:block;line-height:1">{y}%</span>` +
+            `<span style="font-size:${isMobile ? '8px' : '9px'};color:#98A2B3;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-top:8px;display:block">Consistency</span></div>`
         }
       }
     },

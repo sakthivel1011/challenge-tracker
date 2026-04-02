@@ -7,14 +7,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#0A58FF',
-        accent: '#FF3D71',
+        primary: '#6366F1',
+        accent: '#F43F5E',
         surface: '#FFFFFF',
-        bg: '#F8FAFF',
+        bg: '#FAFBFF',
       },
       borderRadius: {
-        lg: '2.25rem',
-        xl: '3.5rem',
+        '2xl': '1.5rem',
+        '3xl': '2rem',
+        '4xl': '2.5rem',
       },
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'sans-serif'],

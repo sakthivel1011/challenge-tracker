@@ -6,20 +6,25 @@
 
 @layer base {
   body {
-    @apply bg-bg font-sans antialiased text-[#0B0E1E] leading-relaxed;
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(10, 88, 255, 0.03) 0px, transparent 40%),
-      radial-gradient(at 100% 100%, rgba(255, 61, 113, 0.02) 0px, transparent 40%);
+    @apply bg-bg font-sans antialiased text-[#1A1F2B] leading-relaxed;
+    background: 
+      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(244, 63, 94, 0.02) 0px, transparent 50%),
+      #FAFBFF;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary text-white px-6 py-3.5 rounded-xl font-bold transition-all hover:scale-[1.02] shadow-xl shadow-primary/25 active:scale-[0.98];
+    @apply bg-gradient-to-br from-primary to-[#4F46E5] text-white px-7 py-4 rounded-2xl font-bold transition-all hover:scale-[1.02] shadow-[0_10px_20px_-5px_rgba(99,102,241,0.4)] active:scale-[0.98] hover:shadow-[0_15px_25px_-5px_rgba(99,102,241,0.5)];
   }
   
   .card-premium {
-    @apply bg-white border border-[#E4E7EC] rounded-lg shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-2px_rgba(0,0,0,0.05)] transition-all duration-300 hover:shadow-2xl hover:translate-y-[-4px];
+    @apply bg-white border border-[#F1F3F7] rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:translate-y-[-2px];
+  }
+
+  .glass-effect {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20;
   }
 }
 
