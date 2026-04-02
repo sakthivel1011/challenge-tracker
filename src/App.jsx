@@ -677,11 +677,11 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
                   {isPopupOpen && (
                     <motion.div
                       ref={popupRef}
-                      initial={{ opacity: 0, scale: 0.85, y: 4 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.85, y: 4 }}
+                      initial={{ opacity: 0, scale: 0.85, y: 4, x: "-50%" }}
+                      animate={{ opacity: 1, scale: 1, y: 0, x: "-50%" }}
+                      exit={{ opacity: 0, scale: 0.85, y: 4, x: "-50%" }}
                       transition={{ duration: 0.15 }}
-                      className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 z-50 bg-white rounded-xl sm:rounded-2xl shadow-2xl border border-[#E4E7EC] p-1.5 sm:p-2 flex gap-1.5 sm:gap-2 min-w-max"
+                      className="absolute left-1/2 bottom-full mb-2 z-50 bg-white rounded-xl sm:rounded-2xl shadow-2xl border border-[#E4E7EC] p-1.5 sm:p-2 flex gap-1.5 sm:gap-2 min-w-max"
                     >
                       <button
                         onClick={(e) => { e.stopPropagation(); handleComplete(d); }}
