@@ -214,7 +214,7 @@ export default function App() {
             <Hexagon className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={2.5} />
           </div>
           <div>
-            <h1 className="text-lg sm:text-2xl font-black tracking-tight text-[#1A1F2B] leading-none">Elite Tracker</h1>
+            <h1 className="text-lg sm:text-2xl font-black tracking-tight text-[#1A1F2B] leading-none">Goal Tracker</h1>
           </div>
         </div>
         {!activeId && (
@@ -415,9 +415,9 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
 
     // Compact Stats Grid (2 Columns)
     const col2X = pageWidth / 2 + 5;
-    
+
     doc.setFontSize(8);
-    
+
     let leftY = y;
     doc.setFont('helvetica', 'normal'); doc.setTextColor(152, 162, 179); doc.text('DURATION', margin, leftY + 4);
     doc.setFont('helvetica', 'bold'); doc.setTextColor(11, 14, 30); doc.text(`${challenge.duration} Days`, margin + 35, leftY + 4);
@@ -465,9 +465,9 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
     // Calendar grid config optimized to fit exactly 15 rows (105 days) on one page
     const cols = 7;
     const cellW = (pageWidth - 2 * margin) / cols;
-    
+
     // Total vertical space left = ~297 - y(90) - legend(10) = ~197 max.
-    const cellH = 12.2; 
+    const cellH = 12.2;
     const gap = 1;
 
     days.forEach((d, i) => {
@@ -537,7 +537,7 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
     // Legend below grid
     const totalRowsFor100 = Math.ceil(Math.min(days.length, 105) / cols);
     let legendY = y + totalRowsFor100 * (cellH + gap) + 4;
-    
+
     // Only wrap to next page if the grid ended right at the bottom
     if (legendY > 288) {
       doc.addPage();
@@ -621,7 +621,7 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
               <Target size={14} /> {challenge.completedDays.length} / {challenge.duration}
             </div>
             {missedCount > 0 && (
-              <div className="flex items-center gap-2 px-4 py-3 bg-slate-100 text-[#475467] rounded-xl text-[10px] sm:text-sm font-bold border border-slate-200 shadow-sm">
+              <div className="flex items-center gap-2 px-4 py-3 bg-rose-50 text-rose-500 rounded-xl text-[10px] sm:text-sm font-bold border border-rose-100 shadow-sm">
                 <X size={14} /> {missedCount} Missed
               </div>
             )}
@@ -657,7 +657,7 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
                   className={`
                      aspect-square rounded-xl sm:rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer border-2 relative overflow-hidden group select-none
                       ${done ? 'bg-primary border-primary text-white shadow-lg' : ''}
-                      ${missed ? 'bg-blue-900 border-blue-900 text-white shadow-lg' : ''}
+                      ${missed ? 'bg-[#F43F5E] border-[#F43F5E] text-white shadow-lg' : ''}
                       ${!done && !missed ? 'bg-white border-[#F1F3F7]' : ''}
                       ${future ? 'opacity-30 border-dashed cursor-not-allowed grayscale bg-blue-50/50' : ''}
                       ${isToday && !done && !missed ? 'border-primary ring-4 ring-primary/10 shadow-md' : ''}
@@ -707,7 +707,7 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
                       </button>
                       <button
                         onClick={(e) => { e.stopPropagation(); handleMissed(d); }}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-black transition-all ${missed ? 'bg-blue-900 text-white' : 'bg-blue-50/50 text-blue-900 hover:bg-blue-900 hover:text-white'}`}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-black transition-all ${missed ? 'bg-[#F43F5E] text-white' : 'bg-rose-50 text-[#F43F5E] hover:bg-[#F43F5E] hover:text-white'}`}
                       >
                         <X size={12} strokeWidth={3} />
                         <span>{missed ? 'Undo' : 'Miss'}</span>
@@ -728,8 +728,8 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
             <span className="text-[9px] sm:text-[10px] font-bold text-[#98A2B3] uppercase tracking-wider">Completed</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded bg-blue-900"></div>
-            <span className="text-[9px] sm:text-[10px] font-bold text-blue-300 uppercase tracking-wider">Missed</span>
+            <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded bg-[#F43F5E]"></div>
+            <span className="text-[9px] sm:text-[10px] font-bold text-rose-400 uppercase tracking-wider">Missed</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded border-2 border-primary ring-2 ring-primary/20"></div>
