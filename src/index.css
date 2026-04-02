@@ -1,18 +1,8 @@
-@import "tailwindcss";
-
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
-@theme {
-  --color-primary: #0A58FF;
-  --color-accent: #FF3D71;
-  --color-surface: #FFFFFF;
-  --color-bg: #F8FAFF;
-  
-  --radius-lg: 2.25rem;
-  --radius-xl: 3.5rem;
-  
-  --font-sans: "Plus Jakarta Sans", sans-serif;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   body {
