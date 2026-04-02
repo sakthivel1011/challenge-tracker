@@ -361,91 +361,99 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
 
   // PDF Report Generation
   const generatePDF = useCallback(() => {
-    const doc = new jsPDF();
+    // Explicitly set A4 format
+    const doc = new jsPDF({ format: 'a4', unit: 'mm' });
     const pageWidth = doc.internal.pageSize.getWidth();
-    const margin = 20;
-    let y = 25;
+    const margin = 15;
+    let y = 15;
 
     // Header accent bar
     doc.setFillColor(10, 88, 255);
-    doc.rect(0, 0, pageWidth, 8, 'F');
+    doc.rect(0, 0, pageWidth, 5, 'F');
 
     // Title
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(26);
+    doc.setFontSize(22);
     doc.setTextColor(11, 14, 30);
-    doc.text('Challenge Report', margin, y + 10);
-    y += 22;
+    doc.text('Challenge Report', margin, y + 8);
+    y += 14;
 
     // Subtitle
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
+    doc.setFontSize(9);
     doc.setTextColor(152, 162, 179);
     doc.text(`Generated on ${format(new Date(), 'MMMM d, yyyy')}`, margin, y);
-    y += 15;
+    y += 8;
 
     // Divider
     doc.setDrawColor(228, 231, 236);
     doc.setLineWidth(0.5);
     doc.line(margin, y, pageWidth - margin, y);
-    y += 12;
+    y += 8;
 
     // Challenge Title
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(20);
+    doc.setFontSize(16);
     doc.setTextColor(11, 14, 30);
     doc.text(challenge.title, margin, y);
-    y += 14;
+    y += 8;
 
-    // Stats Grid
-    const statsData = [
-      ['Duration', `${challenge.duration} Days`],
-      ['Start Date', format(new Date(challenge.startDate), 'MMMM d, yyyy')],
-      ['End Date', format(addDays(new Date(challenge.startDate), challenge.duration - 1), 'MMMM d, yyyy')],
-      ['Completed Days', `${challenge.completedDays.length}`],
-      ['Missed Days', `${missedCount}`],
-      ['Remaining', `${challenge.duration - challenge.completedDays.length - missedCount}`],
-      ['Completion Rate', `${pct}%`],
-    ];
+    // Compact Stats Grid (2 Columns)
+    const col2X = pageWidth / 2 + 5;
+    
+    doc.setFontSize(8);
+    
+    let leftY = y;
+    doc.setFont('helvetica', 'normal'); doc.setTextColor(152, 162, 179); doc.text('DURATION', margin, leftY + 4);
+    doc.setFont('helvetica', 'bold'); doc.setTextColor(11, 14, 30); doc.text(`${challenge.duration} Days`, margin + 35, leftY + 4);
+    leftY += 6;
+    doc.setFont('helvetica', 'normal'); doc.setTextColor(152, 162, 179); doc.text('START DATE', margin, leftY + 4);
+    doc.setFont('helvetica', 'bold'); doc.setTextColor(11, 14, 30); doc.text(format(new Date(challenge.startDate), 'MMM d, yyyy'), margin + 35, leftY + 4);
+    leftY += 6;
+    doc.setFont('helvetica', 'normal'); doc.setTextColor(152, 162, 179); doc.text('END DATE', margin, leftY + 4);
+    doc.setFont('helvetica', 'bold'); doc.setTextColor(11, 14, 30); doc.text(format(addDays(new Date(challenge.startDate), challenge.duration - 1), 'MMM d, yyyy'), margin + 35, leftY + 4);
+    leftY += 6;
+    doc.setFont('helvetica', 'normal'); doc.setTextColor(152, 162, 179); doc.text('COMPLETION', margin, leftY + 4);
+    doc.setFont('helvetica', 'bold'); doc.setTextColor(11, 14, 30); doc.text(`${pct}%`, margin + 35, leftY + 4);
 
-    doc.setFontSize(10);
-    statsData.forEach(([label, value]) => {
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(152, 162, 179);
-      doc.text(label.toUpperCase(), margin, y);
+    let rightY = y;
+    doc.setFont('helvetica', 'normal'); doc.setTextColor(152, 162, 179); doc.text('COMPLETED', col2X, rightY + 4);
+    doc.setFont('helvetica', 'bold'); doc.setTextColor(11, 14, 30); doc.text(`${challenge.completedDays.length}`, col2X + 30, rightY + 4);
+    rightY += 6;
+    doc.setFont('helvetica', 'normal'); doc.setTextColor(152, 162, 179); doc.text('MISSED', col2X, rightY + 4);
+    doc.setFont('helvetica', 'bold'); doc.setTextColor(11, 14, 30); doc.text(`${missedCount}`, col2X + 30, rightY + 4);
+    rightY += 6;
+    doc.setFont('helvetica', 'normal'); doc.setTextColor(152, 162, 179); doc.text('REMAINING', col2X, rightY + 4);
+    doc.setFont('helvetica', 'bold'); doc.setTextColor(11, 14, 30); doc.text(`${challenge.duration - challenge.completedDays.length - missedCount}`, col2X + 30, rightY + 4);
 
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(11, 14, 30);
-      doc.text(value, margin + 50, y);
-      y += 8;
-    });
-
-    y += 6;
+    y = Math.max(leftY, rightY) + 8;
 
     // Progress Bar
     doc.setDrawColor(228, 231, 236);
     doc.setFillColor(243, 244, 246);
-    doc.roundedRect(margin, y, pageWidth - 2 * margin, 8, 4, 4, 'F');
+    doc.roundedRect(margin, y, pageWidth - 2 * margin, 5, 2.5, 2.5, 'F');
 
     if (pct > 0) {
       doc.setFillColor(10, 88, 255);
-      const barWidth = Math.max(8, ((pageWidth - 2 * margin) * pct) / 100);
-      doc.roundedRect(margin, y, barWidth, 8, 4, 4, 'F');
+      const barWidth = Math.max(5, ((pageWidth - 2 * margin) * pct) / 100);
+      doc.roundedRect(margin, y, barWidth, 5, 2.5, 2.5, 'F');
     }
-    y += 18;
+    y += 12;
 
     // Day-by-Day Log Section — Calendar Grid View
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
+    doc.setFontSize(12);
     doc.setTextColor(11, 14, 30);
-    doc.text('Day-by-Day Log', margin, y);
-    y += 12;
+    doc.text('Day-by-Day Matrix', margin, y);
+    y += 8;
 
-    // Calendar grid config
+    // Calendar grid config optimized to fit exactly 15 rows (105 days) on one page
     const cols = 7;
     const cellW = (pageWidth - 2 * margin) / cols;
-    const cellH = 22;
-    const gap = 1.5;
+    
+    // Total vertical space left = ~297 - y(90) - legend(10) = ~197 max.
+    const cellH = 12.2; 
+    const gap = 1;
 
     days.forEach((d, i) => {
       const col = i % cols;
@@ -453,11 +461,11 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
       const cellX = margin + col * cellW;
       const cellY = y + row * (cellH + gap);
 
-      // Page overflow
-      if (cellY + cellH > 275) {
+      // Page overflow for > 100 days
+      if (cellY + cellH > 282) {
         doc.addPage();
         const rowsDrawn = row;
-        y = 20 - rowsDrawn * (cellH + gap);
+        y = 15 - rowsDrawn * (cellH + gap);
       }
 
       const actualCellY = y + row * (cellH + gap);
@@ -469,95 +477,98 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
       // Cell background
       if (done) {
         doc.setFillColor(10, 88, 255);
-        doc.roundedRect(cellX + 0.5, actualCellY, cellW - 1, cellH, 3, 3, 'F');
+        doc.roundedRect(cellX + 0.5, actualCellY, cellW - 1, cellH, 2, 2, 'F');
       } else if (missed) {
         doc.setFillColor(255, 61, 113);
-        doc.roundedRect(cellX + 0.5, actualCellY, cellW - 1, cellH, 3, 3, 'F');
+        doc.roundedRect(cellX + 0.5, actualCellY, cellW - 1, cellH, 2, 2, 'F');
       } else {
         doc.setFillColor(245, 247, 250);
         doc.setDrawColor(228, 231, 236);
-        doc.roundedRect(cellX + 0.5, actualCellY, cellW - 1, cellH, 3, 3, 'FD');
+        doc.roundedRect(cellX + 0.5, actualCellY, cellW - 1, cellH, 2, 2, 'FD');
       }
 
       const centerX = cellX + cellW / 2;
 
       // Day number
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
+      doc.setFontSize(8);
       doc.setTextColor(done || missed ? 255 : 11, done || missed ? 255 : 14, done || missed ? 255 : 30);
-      doc.text(`${d}`, centerX, actualCellY + 7, { align: 'center' });
+      doc.text(`${d}`, centerX, actualCellY + 4.5, { align: 'center' });
 
       // Date below day number
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(5.5);
+      doc.setFontSize(5);
       doc.setTextColor(done || missed ? 220 : 152, done || missed ? 220 : 162, done || missed ? 220 : 179);
-      doc.text(dateStr, centerX, actualCellY + 11.5, { align: 'center' });
+      doc.text(dateStr, centerX, actualCellY + 7.5, { align: 'center' });
 
       // Tick / Cross icon
       if (done) {
-        // Draw tick (✓)
         doc.setDrawColor(255, 255, 255);
-        doc.setLineWidth(0.8);
+        doc.setLineWidth(0.6);
         const ix = centerX;
-        const iy = actualCellY + 16.5;
-        doc.line(ix - 3, iy, ix - 1, iy + 2.5);
-        doc.line(ix - 1, iy + 2.5, ix + 3, iy - 1.5);
+        const iy = actualCellY + 10;
+        doc.line(ix - 2, iy - 0.5, ix - 0.5, iy + 1);
+        doc.line(ix - 0.5, iy + 1, ix + 2, iy - 1.5);
       } else if (missed) {
-        // Draw cross (✗)
         doc.setDrawColor(255, 255, 255);
-        doc.setLineWidth(0.8);
+        doc.setLineWidth(0.6);
         const ix = centerX;
-        const iy = actualCellY + 16.5;
-        doc.line(ix - 2.5, iy - 2, ix + 2.5, iy + 2);
-        doc.line(ix + 2.5, iy - 2, ix - 2.5, iy + 2);
+        const iy = actualCellY + 10;
+        doc.line(ix - 1.5, iy - 1.5, ix + 1.5, iy + 1.5);
+        doc.line(ix + 1.5, iy - 1.5, ix - 1.5, iy + 1.5);
       }
     });
 
     // Legend below grid
-    const totalRows = Math.ceil(days.length / cols);
-    let legendY = y + totalRows * (cellH + gap) + 6;
-    if (legendY > 275) {
+    const totalRowsFor100 = Math.ceil(Math.min(days.length, 105) / cols);
+    let legendY = y + totalRowsFor100 * (cellH + gap) + 4;
+    
+    // Only wrap to next page if the grid ended right at the bottom
+    if (legendY > 288) {
       doc.addPage();
       legendY = 20;
     }
 
-    doc.setFontSize(7);
+    doc.setFontSize(6);
     doc.setFont('helvetica', 'normal');
 
     // Completed legend
     doc.setFillColor(10, 88, 255);
-    doc.roundedRect(margin, legendY, 6, 6, 1, 1, 'F');
+    doc.roundedRect(margin, legendY, 5, 5, 1, 1, 'F');
     doc.setTextColor(100, 100, 100);
-    doc.text('Completed', margin + 9, legendY + 5);
+    doc.text('Completed', margin + 7, legendY + 3.5);
 
     // Missed legend
     doc.setFillColor(255, 61, 113);
-    doc.roundedRect(margin + 40, legendY, 6, 6, 1, 1, 'F');
-    doc.text('Missed', margin + 49, legendY + 5);
+    doc.roundedRect(margin + 30, legendY, 5, 5, 1, 1, 'F');
+    doc.text('Missed', margin + 37, legendY + 3.5);
 
     // Remaining legend
     doc.setFillColor(245, 247, 250);
     doc.setDrawColor(228, 231, 236);
-    doc.roundedRect(margin + 72, legendY, 6, 6, 1, 1, 'FD');
-    doc.text('Remaining', margin + 81, legendY + 5);
+    doc.roundedRect(margin + 55, legendY, 5, 5, 1, 1, 'FD');
+    doc.text('Remaining', margin + 62, legendY + 3.5);
 
-    legendY += 16;
+    legendY += 12;
 
     // Motivational quote
-    if (legendY > 260) {
+    if (legendY > 285) {
       doc.addPage();
       legendY = 20;
     }
     const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
     doc.setFont('helvetica', 'italic');
-    doc.setFontSize(11);
+    doc.setFontSize(9);
     doc.setTextColor(152, 162, 179);
     doc.text(`"${randomQuote}"`, pageWidth / 2, legendY, { align: 'center' });
 
     // Footer accent bar
-    const pageHeight = doc.internal.pageSize.getHeight();
-    doc.setFillColor(10, 88, 255);
-    doc.rect(0, pageHeight - 5, pageWidth, 5, 'F');
+    const pages = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pages; i++) {
+      doc.setPage(i);
+      doc.setFillColor(10, 88, 255);
+      doc.rect(0, 292, pageWidth, 5, 'F');
+    }
 
     doc.save(`${challenge.title.replace(/[^a-zA-Z0-9]/g, '_')}_report.pdf`);
   }, [challenge, pct, missedCount, days]);
