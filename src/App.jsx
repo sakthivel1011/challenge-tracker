@@ -196,7 +196,7 @@ export default function App() {
   const triggerSuccess = () => {
     setQuote(quotes[Math.floor(Math.random() * quotes.length)]);
     setShowConfetti(true);
-    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#0A58FF', '#FF3D71'] });
+    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#0066FF', '#00B2FF'] });
     setTimeout(() => setShowConfetti(false), 3000);
   };
 
@@ -262,10 +262,10 @@ export default function App() {
                 </div>
               </div>
               <div className="lg:col-span-4 grid grid-cols-2 lg:flex lg:flex-col gap-3 sm:gap-6 h-full">
-                <PremiumStat value={challenges.length} label="Active" icon={Layout} colorClass="bg-indigo-50 text-indigo-600" />
-                <PremiumStat value={totalCompleted} label="Check-ins" icon={Zap} colorClass="bg-rose-50 text-rose-600" />
-                <div className="col-span-2 lg:col-span-1">
-                  <PremiumStat value={challenges.filter(c => c.completedDays.length === c.duration).length} label="Mastered" icon={Award} colorClass="bg-amber-50 text-amber-600" />
+                <PremiumStat value={challenges.length} label="Active" icon={Layout} colorClass="bg-blue-50 text-primary" />
+                <PremiumStat value={totalCompleted} label="Check-ins" icon={Zap} colorClass="bg-blue-600/5 text-primary" />
+                <div className="col-span-2 lg:col-span-1 border-t border-blue-50 pt-3 lg:pt-0 lg:border-none">
+                  <PremiumStat value={challenges.filter(c => c.completedDays.length === c.duration).length} label="Mastered" icon={Award} colorClass="bg-primary text-white shadow-lg shadow-primary/20" />
                 </div>
               </div>
             </div>
@@ -621,8 +621,8 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
               <Target size={14} /> {challenge.completedDays.length} / {challenge.duration}
             </div>
             {missedCount > 0 && (
-              <div className="flex items-center gap-2 px-4 py-3 bg-rose-50 text-rose-500 rounded-xl text-[10px] sm:text-sm font-bold border border-rose-100 shadow-sm">
-                <X size={14} /> {missedCount}
+              <div className="flex items-center gap-2 px-4 py-3 bg-slate-100 text-[#475467] rounded-xl text-[10px] sm:text-sm font-bold border border-slate-200 shadow-sm">
+                <X size={14} /> {missedCount} Missed
               </div>
             )}
           </div>
@@ -656,12 +656,12 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
                   onClick={() => handleDayClick(d, future)}
                   className={`
                      aspect-square rounded-xl sm:rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer border-2 relative overflow-hidden group select-none
-                     ${done ? 'bg-primary border-primary text-white shadow-lg' : ''}
-                     ${missed ? 'bg-accent border-accent text-white shadow-lg' : ''}
-                     ${!done && !missed ? 'bg-white border-[#E4E7EC]' : ''}
-                     ${future ? 'opacity-30 border-dashed cursor-not-allowed grayscale bg-slate-50' : ''}
-                     ${isToday && !done && !missed ? 'border-primary ring-4 ring-primary/10 shadow-lg' : ''}
-                     ${isPopupOpen ? 'ring-4 ring-primary/30 z-10' : ''}
+                      ${done ? 'bg-primary border-primary text-white shadow-lg' : ''}
+                      ${missed ? 'bg-blue-900 border-blue-900 text-white shadow-lg' : ''}
+                      ${!done && !missed ? 'bg-white border-[#F1F3F7]' : ''}
+                      ${future ? 'opacity-30 border-dashed cursor-not-allowed grayscale bg-blue-50/50' : ''}
+                      ${isToday && !done && !missed ? 'border-primary ring-4 ring-primary/10 shadow-md' : ''}
+                     ${isPopupOpen ? 'ring-2 ring-primary/30 z-20 shadow-xl' : ''}
                    `}
                 >
                   <span className={`text-base sm:text-lg font-black leading-none ${done || missed ? 'text-white' : future ? 'text-slate-300' : 'text-[#0B0E1E]'}`}>{d}</span>
@@ -692,28 +692,27 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
                   {isPopupOpen && (
                     <motion.div
                       ref={popupRef}
-                      initial={{ opacity: 0, scale: 0.85, y: 4, x: "-50%" }}
+                      initial={{ opacity: 0, scale: 0.9, y: 4, x: "-50%" }}
                       animate={{ opacity: 1, scale: 1, y: 0, x: "-50%" }}
-                      exit={{ opacity: 0, scale: 0.85, y: 4, x: "-50%" }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute left-1/2 bottom-full mb-2 z-50 bg-white rounded-xl sm:rounded-2xl shadow-2xl border border-[#E4E7EC] p-1.5 sm:p-2 flex gap-1.5 sm:gap-2 min-w-max"
+                      exit={{ opacity: 0, scale: 0.9, y: 4, x: "-50%" }}
+                      transition={{ duration: 0.12 }}
+                      className="absolute left-1/2 bottom-full mb-1 z-50 bg-white rounded-lg shadow-[0_10px_40px_-5px_rgba(0,0,0,0.1)] border border-blue-100 p-1 flex gap-1 min-w-max overscroll-none"
                     >
                       <button
                         onClick={(e) => { e.stopPropagation(); handleComplete(d); }}
-                        className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-extrabold transition-all ${done ? 'bg-primary text-white' : 'bg-blue-50 text-primary hover:bg-primary hover:text-white'}`}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-black transition-all ${done ? 'bg-primary text-white' : 'bg-blue-50 text-primary hover:bg-blue-600 hover:text-white'}`}
                       >
-                        <CheckCircle2 size={14} strokeWidth={2.5} />
-                        <span>{done ? 'Undo' : 'Complete'}</span>
+                        <CheckCircle2 size={12} strokeWidth={3} />
+                        <span>{done ? 'Undo' : 'Check'}</span>
                       </button>
                       <button
                         onClick={(e) => { e.stopPropagation(); handleMissed(d); }}
-                        className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-extrabold transition-all ${missed ? 'bg-accent text-white' : 'bg-red-50 text-red-500 hover:bg-accent hover:text-white'}`}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] font-black transition-all ${missed ? 'bg-blue-900 text-white' : 'bg-blue-50/50 text-blue-900 hover:bg-blue-900 hover:text-white'}`}
                       >
-                        <X size={14} strokeWidth={2.5} />
-                        <span>{missed ? 'Undo' : 'Missed'}</span>
+                        <X size={12} strokeWidth={3} />
+                        <span>{missed ? 'Undo' : 'Miss'}</span>
                       </button>
-                      {/* Popup arrow */}
-                      <div className="absolute left-1/2 -translate-x-1/2 top-full w-2.5 h-2.5 bg-white border-r border-b border-[#E4E7EC] rotate-45 -mt-[5px]"></div>
+                      <div className="absolute left-1/2 -translate-x-1/2 top-full w-2 h-2 bg-white border-r border-b border-blue-100 rotate-45 -mt-[4.5px]"></div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -729,8 +728,8 @@ function ChallengeDetail({ challenge, onBack, onToggle, onToggleMissed, onDelete
             <span className="text-[9px] sm:text-[10px] font-bold text-[#98A2B3] uppercase tracking-wider">Completed</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded bg-accent"></div>
-            <span className="text-[9px] sm:text-[10px] font-bold text-[#98A2B3] uppercase tracking-wider">Missed</span>
+            <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded bg-blue-900"></div>
+            <span className="text-[9px] sm:text-[10px] font-bold text-blue-300 uppercase tracking-wider">Missed</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded border-2 border-primary ring-2 ring-primary/20"></div>
@@ -760,17 +759,17 @@ function CreateModal({ onClose, onSubmit }) {
         <div className="space-y-10 sm:space-y-12">
           <div>
             <label className="text-xs font-black uppercase tracking-[0.2em] text-[#98A2B3] mb-4 block">Challenge Focus</label>
-            <input type="text" placeholder="e.g. Deep Work Protocol" value={title} onChange={e => setTitle(e.target.value)} className="w-full text-2xl font-bold bg-transparent border-b-2 border-[#F1F3F7] focus:border-primary outline-none py-3 transition-all placeholder:text-[#98A2B3]/50" autoFocus />
+            <input type="text" placeholder="e.g. Daily Deep Work" value={title} onChange={e => setTitle(e.target.value)} className="w-full text-2xl font-bold bg-transparent border-b-2 border-primary/10 focus:border-primary outline-none py-3 transition-all placeholder:text-primary/10" autoFocus />
           </div>
           <div className="grid sm:grid-cols-2 gap-10">
             <div>
               <label className="text-xs font-black uppercase tracking-[0.2em] text-[#98A2B3] mb-4 block">Duration</label>
               <div className="flex gap-2 mb-4">
                 {['25', '50', '100'].map(p => (
-                  <button key={p} onClick={() => setDays(p)} className={`flex-1 py-3 rounded-xl font-black text-xs transition-all border-2 ${days === p ? 'bg-primary border-primary text-white shadow-md' : 'bg-[#FAFBFF] border-transparent text-[#475467] hover:border-primary/20'}`}>{p}D</button>
+                  <button key={p} onClick={() => setDays(p)} className={`flex-1 py-3 rounded-xl font-black text-xs transition-all border-2 ${days === p ? 'bg-primary border-primary text-white shadow-md' : 'bg-blue-50/30 border-transparent text-primary hover:border-primary/20'}`}>{p}D</button>
                 ))}
               </div>
-              <input type="number" value={days} onChange={e => setDays(e.target.value)} className="w-full text-lg font-bold text-center bg-[#FAFBFF] p-4 rounded-2xl border border-[#F1F3F7] focus:border-primary/30 outline-none" />
+              <input type="number" value={days} onChange={e => setDays(e.target.value)} className="w-full text-lg font-bold text-center bg-blue-50/30 p-4 rounded-2xl border border-blue-50 focus:border-primary/30 outline-none text-primary" />
             </div>
             <div>
               <label className="text-xs font-black uppercase tracking-[0.2em] text-[#98A2B3] mb-4 block">Commencement</label>
@@ -780,7 +779,7 @@ function CreateModal({ onClose, onSubmit }) {
                   type="date"
                   value={startDate}
                   onChange={e => setStartDate(e.target.value)}
-                  className="w-full text-lg font-bold bg-[#FAFBFF] p-4 pl-14 rounded-2xl border border-[#F1F3F7] text-[#1A1F2B] focus:border-primary outline-none transition-all appearance-none shadow-sm"
+                  className="w-full text-lg font-bold bg-blue-50/30 p-4 pl-14 rounded-2xl border border-blue-50 text-primary focus:border-primary outline-none transition-all appearance-none shadow-sm"
                 />
               </div>
             </div>
@@ -823,9 +822,9 @@ function getGaugeOptions(value, max = 100, isMobile = false) {
       min: 0,
       max: max,
       stops: [
-        [0.1, '#818CF8'], // Indigo 400
-        [0.5, '#6366F1'], // Indigo 500 (Primary)
-        [0.9, '#4F46E5']  // Indigo 600
+        [0.1, '#60A5FA'], // Light Blue
+        [0.5, '#0066FF'], // Primary Blue
+        [0.9, '#1D4ED8']  // Dark Blue
       ],
       lineWidth: 0,
       tickWidth: 0,
